@@ -98,7 +98,7 @@ export const Sidebar: React.FC = () => {
       label: "Upload Document",
     },
     { href: "/dashboard?tab=website", Icon: <Globe fill="#000" stroke="#fff" />, label: "Website Link" },
-    { href: "/architecture", Icon: <Pyramid  fill="#000" stroke="#fff" />, label: "Architecture" },
+    { href: "/architectures", Icon: <Pyramid  fill="#000" stroke="#fff" />, label: "Architecture" },
     { href: "/history", Icon: <History  />, label: "History" },
   ];
 

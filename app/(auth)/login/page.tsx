@@ -11,6 +11,7 @@ import { z } from "zod"; // For schema validation
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Graphic from "@/public/images/login_graphic.png";
+import ThemeToggle from "@/components/ThemeToggle";
 
 interface FormData {
   email: string;
@@ -62,7 +63,7 @@ export default function Login() {
     <div className="min-h-screen w-full flex justify-between items-center">
       <div className="w-full min-h-screen lg:w-4/12 bg-background rounded-lg border border-grey-100 shadow-sm font-body flex flex-col justify-between">
         <div className="px-8 pt-8">
-          <Image src="/logo.png" width={120} height={100} alt="Logo" />
+          <Image src="/logo.png" width={150} height={120} alt="Logo" />
         </div>
         <div className="py-[50px] px-[20px] lg:py-[50px] lg:px-[70px]">
           <h2 className="text-center text-3xl font-bold mb-8">Login</h2>
@@ -130,6 +131,8 @@ export default function Login() {
         </div>
       </div>
       <div className="w-4/6 flex-col items-center justify-center hidden lg:flex">
+      <div className="fixed right-10 top-10 font-body">
+      <ThemeToggle /></div>
         <div className="font-heading text-6xl font-bold flex flex-col-reverse lg:flex-row gap-8 items-center justify-center mb-5">
           <h1 className="text-center">
             Bring <span className="text-primary">Ideas</span> to{" "}

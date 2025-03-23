@@ -5,7 +5,7 @@ import { authOption } from "@/lib/auth";
 
 export async function POST(req: NextRequest) {
   try {
-    const { description, name, title } = await req.json();
+    const { description, name, title, architecture, prototype } = await req.json();
 
     // Retrieve user session
     const session = await getServerSession(authOption);
@@ -41,25 +41,63 @@ export async function POST(req: NextRequest) {
     });
 
     if (existingIdea) {
+      let updatedData: any = {};
+
+      if (architecture) {
+        updatedData.architecture = architecture;
+      }
+
+      if (prototype) {
+        updatedData.prototype = prototype;
+      }
+
+      // Update only if there are changes
+      if (Object.keys(updatedData).length > 0) {
+        const updatedIdea = await prisma.ideaHistory.update({
+          data: updatedData,
+          where: {
+            id: existingIdea.id, // Use primary key instead of filtering again
+          },
+        });
+
+        return NextResponse.json(
+          {
+            message: "Data updated successfully.",
+            idea: updatedIdea,
+          },
+          { status: 200 }
+        );
+      }
+
       return NextResponse.json(
-        { error: "This idea is already exists." },
+        { error: "This idea already exists." },
         { status: 400 }
       );
     }
 
-    // Create the new idea
+    // Create new idea
+    const requestedData: any = {
+      title,
+      name,
+      description,
+      user_id: +userId,
+    };
+
+    if (architecture) {
+      requestedData.architecture = architecture;
+    }
+
+    if (prototype) {
+      requestedData.prototype = prototype;
+    }
+
     const newIdea = await prisma.ideaHistory.create({
-      data: {
-        title: title,
-        name: name,
-        description: description,
-        user_id: +userId,
-      },
+      data: requestedData,
     });
 
     return NextResponse.json(
       {
-        message: "Idea saved successfully.",
+        message: "Data saved successfully.",
         idea: newIdea,
       },
       { status: 200 }

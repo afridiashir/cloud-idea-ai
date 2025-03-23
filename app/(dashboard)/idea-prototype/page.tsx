@@ -13,6 +13,7 @@ import { useIdea } from "@/components/IdeaProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import Tour from "@/components/Tours";
 import { ideaPrototypePageSteps } from "@/components/tour";
+import FormButton from "@/components/FormButton";
 
 // Interface for card data
 interface Card {
@@ -30,7 +31,9 @@ const Page: React.FC = () => {
   const [cards, setCards] = useState<Card[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
-  const { prototypeText } = useIdea();
+  const { prototypeText,name,prototypeTitle } = useIdea();
+  
+    const [saveBtnLoader, setSaveBtnLoader] = useState(false);
 
   // Fetch cards from the API
   useEffect(() => {
@@ -55,11 +58,34 @@ const Page: React.FC = () => {
     fetchCards();
   }, []);
 
+  
+  const handleSaveIdea = (e:any) => {
+    setSaveBtnLoader(true);
+    const response = axios
+      .post("/api/idea/save", {
+        name: name,
+        title: prototypeTitle,
+        description: prototypeText,
+        prototype: JSON.stringify(cards)
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+
+        setSaveBtnLoader(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setSaveBtnLoader(false);
+        toast.error(e.response.data.error);
+      });
+  };
+
   return (
     <div className="w-full pb-16  min-h-screen">
       <IdeaBar menu="prototype" />
       <div className="w-full mt-4">
-        <div className="w-full flex px-6 gap-[480px]">
+        <div className="w-full flex justify-between px-6 gap-[480px]">
           <Button
             variant="outline"
             className="font-body py-6 flex gap-4 bg-background text-xl"
@@ -68,6 +94,13 @@ const Page: React.FC = () => {
           >
             <ArrowLeft /> Back
           </Button>
+          
+        <FormButton
+          text="Save Prototype"
+          state={saveBtnLoader}
+          onClick={handleSaveIdea}
+          className="w-[200px] text-lg font-body  hover:bg-white px-32 hover:text-blue-600 bg-blue-600 text-white"
+        />
         </div>
         <div className="flex justify-center flex-col items-center mt-4">
           <h1 className="font-heading font-bold text-6xl">

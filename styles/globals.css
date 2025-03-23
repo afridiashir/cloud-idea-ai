@@ -10,6 +10,7 @@ body.light {
   background-size: cover;
   background-repeat: no-repeat;
   background-position: center;
+  background-attachment: fixed;
 }
 body.dark {
   background: url('/dark_background.png');
@@ -17,6 +18,8 @@ body.dark {
   background-repeat: no-repeat;
   background-position: center;
   background-color: #000;
+  
+  background-attachment: fixed;
 }
 
 

@@ -87,7 +87,7 @@ const Page: React.FC = () => {
   const [prototypeBtnLoader, setPrototypeBtnLoader] = useState(false);
   const [chatBtnLoader, setChatBtnLoader] = useState(false);
   const [saveBtnLoader, setSaveBtnLoader] = useState(false);
-  const { selectedIdeas, setPrototypeText,name } = useIdea();
+  const { selectedIdeas, setPrototypeText,name, setPrototypeTitle } = useIdea();
   const cards: Card[] = selectedIdeas || []; // Ensure cards is always an array.
   const router = useRouter();
 
@@ -161,7 +161,25 @@ const Page: React.FC = () => {
     if(selectedCard.idea !== null){
 
       setPrototypeText(selectedCard.idea);
+      setPrototypeTitle(selectedCard.title);
       router.push("/idea-prototype");
+      
+    setPrototypeBtnLoader(false);
+    }else{
+      
+    setPrototypeBtnLoader(false);
+      toast.error("Please select an Idea");
+    }
+  };
+
+  
+  const handleIdeaArchitecture = () => {
+    setPrototypeBtnLoader(true);
+    if(selectedCard.idea !== null){
+
+      setPrototypeText(selectedCard.idea);
+      setPrototypeTitle(selectedCard.title);
+      router.push("/idea-architecture");
       
     setPrototypeBtnLoader(false);
     }else{
@@ -242,7 +260,7 @@ const Page: React.FC = () => {
           <div className="w-full lg:w-1/2 flex flex-col items-end p-6">
           <div className="flex justify-end gap-4">
             <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white ${saveBtnLoader ? 'animate-pulse' : ''}`} disabled={saveBtnLoader} onClick={handleSaveIdea}><Bookmark size={94}/></Button>
-            <Button variant="outline" className="h-14" onClick={() => router.push("/idea-architecture")}>
+            <Button variant="outline" className="h-14" onClick={handleIdeaArchitecture}>
               <span className="text-xl">
                 <Snowflake size={36} />
               </span>

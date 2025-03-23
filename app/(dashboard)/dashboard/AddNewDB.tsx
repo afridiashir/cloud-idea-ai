@@ -104,10 +104,10 @@ const AddNewDB: React.FC = () => {
       <div className="flex flex-col lg:flex-row items-center justify-center px-4 pt-8 md:pt-16">
         <div className="w-full lg:w-1/2 flex flex-col items-center">
           <h1 className="font-heading text-5xl font-semibold">
-            Connect Database
+            Connect Data Source
           </h1>
           <p className="px-4 text-center mt-4 font-body text-foreground">
-            Configure your database connection here. Click save when you`re done.
+            Connect on-prem or cloud database
           </p>
           <form
             className="w-full px-4 md:w-[600px] mt-4"

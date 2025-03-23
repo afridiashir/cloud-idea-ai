@@ -15,7 +15,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 interface Card {
   description: string;
   title: string;
-  prototype:string;
+  architecture : string;
 }
 
 // InfoCard Component Props
@@ -39,7 +39,7 @@ const Page: React.FC = () => {
       try {
         setLoading(true);
         const response = await axios.get(
-          `/api/idea?page=${currentPage}&limit=${limit}&search=${search}`
+          `/api/architecture/list?page=${currentPage}&limit=${limit}&search=${search}`
         );
         setCards(response.data.result || []);
         setTotalPages(response.data.pagination.totalPages || 1);
@@ -83,7 +83,7 @@ const Page: React.FC = () => {
           >
             <ArrowLeft /> Back
           </Button>
-          <h1 className="font-heading text-4xl font-bold">Idea History</h1>
+          <h1 className="font-heading text-4xl font-bold">Architectures & Diagrams</h1>
         </div>
         <div className="w-[400px] h-40px border border-blue-600 rounded-lg flex items-center bg-background p-2 pr-4">
           <input
@@ -133,22 +133,10 @@ const Page: React.FC = () => {
 // InfoCard Component
 const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
   const [expanded, setExpanded] = useState(false);
-  const maxLines = 5; // Show only 5 lines before "See More"
-
-  // Function to parse JSON safely
-  const parsePrototype = (prototype: string) => {
-    try {
-      return JSON.parse(prototype);
-    } catch (error) {
-      console.error("Invalid JSON format in prototype:", error);
-      return [];
-    }
-  };
-
-  const prototypeData = parsePrototype(card.prototype); // Parse safely
+  const maxLines = 5; // Show only 3 lines before "See More"
 
   const formatResponse = (response: string) => {
-    return response.split("\n").map((line, index) => (
+    const formattedLines = response.split("\n").map((line, index) => (
       <span key={index}>
         {line.split(/(https?:\/\/[^\s]+|\*\*[^*]+\*\*)/g).map((part, i) => {
           if (part.match(/https?:\/\/[^\s]+/)) {
@@ -158,7 +146,7 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
                 href={part}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-blue-600 underline"
+                style={{ color: "blue", textDecoration: "underline" }}
               >
                 {part}
               </a>
@@ -172,45 +160,26 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
         <br />
       </span>
     ));
+
+    return formattedLines;
   };
 
   const formattedContent = formatResponse(card.description);
   const shouldShowSeeMore = formattedContent.length > maxLines;
 
-
-  function getDomainName(link) {
-    try {
-      const url = new URL(link);
-      return url.hostname; // Returns the domain name
-    } catch (error) {
-      console.error("Invalid URL:", error);
-      return null;
-    }
-  }
-
   return (
     <div className="p-4 px-8 w-full border rounded-xl font-body shadow-md bg-background relative mb-4">
       <div className="flex justify-between items-start">
-        <h3 className="text-md font-semibold text-blue-600 break-words">
+        <h3 className="text-lg font-semibold text-blue-600 break-words">
           {card.title}
         </h3>
       </div>
-      <div className="my-4">
-        {expanded ? formattedContent : formattedContent.slice(0, maxLines)}
+      <div className="my-4 relative w-full overflow-scroll h-[600px]">
+        <img src={card.architecture} className="mx-auto w-[20%] h-auto mx-32" />
 
-        {/* Display prototype links if they exist */}
-        {expanded && (prototypeData?.length > 0 && (
-          <div className="">
-            <h1 className="text-lg font-bold mt-4">Prototypes:</h1>
-            {prototypeData.map((item: { link: string }, index: number) => (
-              <div key={index}>
-                <a href={item.link} target="_blank" className="text-blue-600 mt-2 underline">{item.link}</a>
-              </div>
-            ))}
-          </div>
-        ))}
-        
-
+        {/* {expanded
+          ? formattedContent
+          : formattedContent.slice(0, maxLines)}
         {shouldShowSeeMore && !expanded && (
           <button
             onClick={() => setExpanded(true)}
@@ -218,7 +187,7 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
           >
             See More
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );

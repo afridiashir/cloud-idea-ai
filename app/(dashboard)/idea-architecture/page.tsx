@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useId } from "react";
 import { useRouter } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
@@ -13,6 +13,7 @@ import { useIdea } from "@/components/IdeaProvider";
 import { Skeleton } from "@/components/ui/skeleton";
 import Tour from "@/components/Tours";
 import { ideaPrototypePageSteps } from "@/components/tour";
+import FormButton from "@/components/FormButton";
 
 // Interface for the API response
 interface DiagramResponse {
@@ -23,40 +24,44 @@ interface DiagramResponse {
     code: string;
   }[];
 }
+interface DiagramDummyResponse {
+  imageUrl: string;
+  // createEraserFileUrl: string;
+  // diagrams: {
+  //   diagramType: string;
+  //   code: string;
+  // }[];
+}
 
 // Page Component
 const Page: React.FC = () => {
-  const [diagramData, setDiagramData] = useState<DiagramResponse | null>(null);
+  const [diagramData, setDiagramData] = useState<
+    DiagramResponse | null | DiagramDummyResponse
+  >(null);
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
-  const { prototypeText } = useIdea();
+  const { name, prototypeText, prototypeTitle } = useIdea();
+
+  const [saveBtnLoader, setSaveBtnLoader] = useState(false);
+
+  console.log(prototypeText);
 
   // Fetch diagram data from the API
   useEffect(() => {
     const fetchDiagramData = async () => {
       try {
         setLoading(true);
-        const response = await axios.post(
-          "https://app.eraser.io/api/render/prompt", // Replace with your API endpoint
-          { "text" : "An Azure-based RAG application for querying a company’s codebase. Azure Front Door manages global request routing, directing users to a web interface hosted on Azure App Service or Static Web Apps. When a user asks a question, it’s routed through Azure API Management. Azure Cognitive Search indexes the codebase stored in Azure Blob Storage or Azure DevOps Repos to retrieve relevant snippets. These results are then passed to Azure OpenAI Service to generate context-rich responses. Azure Functions handle data transformations, while Azure Cache for Redis speeds up response times by caching frequent queries. The response flows back through API Management to the web interface, with monitoring managed by Azure Monitor and Application Insights.",
-            "theme" : "light",
-            "diagramType": "flowchart-diagram",
-    "mode": "standard",
-    "returnFile": false,
-    "background": true,
-    "scale": "1"
-           },
-          {
-            headers: { 
-              "accept": "application/json",
-              "content-type": "application/json",
-              "authorization": "Bearer ngSvOEpJZLZrT43hEbum"          
-             },
-          }
-        );
-        setDiagramData(response.data);
+        // const response = await axios.post("/api/architecture",{
+        //   text: prototypeText
+        // });
+        // setDiagramData(response.data.data);
+
+        // console.log(response);
+        setDiagramData({
+          imageUrl:
+            "https://storage.googleapis.com/second-petal-295822.appspot.com/elements/autoDiagram%3A24ab78b602d6a35fccf7c1529cc1fcb91f2c9b6fc1d4f580ed42e7106c9dd959.png",
+        });
         setLoading(false);
-        console.log(response);
       } catch (error) {
         toast.error("Failed to fetch diagram data. Please try again.");
         setLoading(false);
@@ -66,48 +71,66 @@ const Page: React.FC = () => {
     fetchDiagramData();
   }, [prototypeText]);
 
+  const handleSaveIdea = (e:any) => {
+    setSaveBtnLoader(true);
+    const response = axios
+      .post("/api/idea/save", {
+        name: name,
+        title: prototypeTitle,
+        description: prototypeText,
+        architecture: diagramData.imageUrl,
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success(res.data.message);
+
+        setSaveBtnLoader(false);
+      })
+      .catch((e) => {
+        console.log(e);
+        setSaveBtnLoader(false);
+        toast.error(e.response.data.error);
+      });
+  };
   return (
     <div className="w-full pb-16 min-h-screen">
-      <IdeaBar menu="" />
-      <div className="w-full mt-4">
-        <div className="w-full flex px-6 gap-[480px]">
-          <Button
-            variant="outline"
-            className="font-body py-6 flex gap-4 bg-background text-xl"
-            onClick={() => router.back()}
-            aria-label="Go Back"
-          >
-            <ArrowLeft /> Back
-          </Button>
-        </div>
-        <div className="flex justify-center flex-col items-center mt-4">
-          <h1 className="font-heading font-bold text-6xl">
-            Architecture & Diagram
-          </h1>
-          <p className="font-body mt-4 text-lg">
-            A diagram view showing how the idea will work in a real context.
-          </p>
-        </div>
-
+      <div className="w-full border-b px-2 lg:px-32 py-6 flex justify-between items-center gap-6">
+        <Button
+          variant="outline"
+          className="font-body py-6 flex gap-4 bg-background text-xl"
+          onClick={() => router.back()}
+        >
+          <ArrowLeft /> Back
+        </Button>
+        <h1 className="font-heading text-2xl  lg:text-4xl font-bold">
+          MVP Architecture
+        </h1>
+        <FormButton
+          text="Save Architecture"
+          state={saveBtnLoader}
+          onClick={handleSaveIdea}
+          className="w-[200px] text-lg font-body  hover:bg-white px-32 hover:text-blue-600 bg-blue-600 text-white"
+        />
+      </div>
+      <div className="px-32">
         {loading ? (
-          <Skeleton className="w-full h-[300px] bg-gray-100 mx-8lg:mx-32" />
+          <Skeleton className=" h-[800px] bg-gray-100" />
         ) : diagramData ? (
           <div className="mt-8 px-6 mx-32">
-            <div className="flex flex-col items-center gap-4">
+            <div className="flex flex-col items-center padding overflow-scroll relative  h-[800px] gap-4">
               {/* Display the diagram image */}
               <img
                 src={diagramData.imageUrl}
                 alt="Architecture Diagram"
-                className="w-full max-w-4xl rounded-lg shadow-lg"
+                height={400}
+                className=" rounded-lg shadow-lg w-full "
               />
             </div>
           </div>
         ) : (
-          <p className="text-center text-lg">No diagram data found.</p>
+          <p className="text-center text-lg">No Architecture found.</p>
         )}
       </div>
-
-      <Tour pageSteps={ideaPrototypePageSteps} />
     </div>
   );
 };

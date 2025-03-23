@@ -211,7 +211,7 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
         ))}
         
 
-        {shouldShowSeeMore && !expanded && (
+        {shouldShowSeeMore && !expanded && prototypeData?.length > 0  && (
           <button
             onClick={() => setExpanded(true)}
             className="text-blue-600 mt-2 inline cursor-pointer"

@@ -51,16 +51,16 @@ const Page: React.FC = () => {
     const fetchDiagramData = async () => {
       try {
         setLoading(true);
-        // const response = await axios.post("/api/architecture",{
-        //   text: prototypeText
-        // });
-        // setDiagramData(response.data.data);
-
-        // console.log(response);
-        setDiagramData({
-          imageUrl:
-            "https://storage.googleapis.com/second-petal-295822.appspot.com/elements/autoDiagram%3A24ab78b602d6a35fccf7c1529cc1fcb91f2c9b6fc1d4f580ed42e7106c9dd959.png",
+        const response = await axios.post("/api/architecture",{
+          text: prototypeText
         });
+        setDiagramData(response.data.data);
+
+        console.log(response);
+        // setDiagramData({
+        //   imageUrl:
+        //     "https://storage.googleapis.com/second-petal-295822.appspot.com/elements/autoDiagram%3A24ab78b602d6a35fccf7c1529cc1fcb91f2c9b6fc1d4f580ed42e7106c9dd959.png",
+        // });
         setLoading(false);
       } catch (error) {
         toast.error("Failed to fetch diagram data. Please try again.");

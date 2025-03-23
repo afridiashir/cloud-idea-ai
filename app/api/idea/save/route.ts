@@ -41,7 +41,7 @@ export async function POST(req: NextRequest) {
     });
 
     if (existingIdea) {
-      let updatedData: any = {};
+      const updatedData: any = {};
 
       if (architecture) {
         updatedData.architecture = architecture;

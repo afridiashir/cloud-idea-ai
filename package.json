@@ -32,8 +32,10 @@
     "clsx": "^2.1.1",
     "docx": "^9.1.1",
     "fs": "^0.0.1-security",
+    "fslightbox-react": "^1.8.0",
     "input-otp": "^1.4.1",
     "jsonwebtoken": "^9.0.2",
+    "lightbox.js-react": "^1.4.9",
     "lucide-react": "^0.468.0",
     "mammoth": "^1.9.0",
     "next": "14.2.16",
@@ -52,6 +54,7 @@
     "remark-gfm": "^4.0.0",
     "tailwind-merge": "^2.5.5",
     "tailwindcss-animate": "^1.0.7",
+    "yet-another-react-lightbox": "^3.21.8",
     "zod": "^3.24.2"
   },
   "devDependencies": {

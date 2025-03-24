@@ -10,12 +10,19 @@ import toast from "react-hot-toast";
 import Link from "next/link";
 import axios from "axios";
 import { Skeleton } from "@/components/ui/skeleton";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+} from "@/components/ui/dialog";
 
 // Interface for card data
 interface Card {
   description: string;
   title: string;
-  prototype:string;
+  prototype: string;
+  architecture :string;
 }
 
 // InfoCard Component Props
@@ -31,7 +38,7 @@ const Page: React.FC = () => {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(1);
   const router = useRouter();
-  const limit = 5; // Number of items per page
+  const limit = 5;
 
   // Fetch cards from the API
   useEffect(() => {
@@ -56,7 +63,7 @@ const Page: React.FC = () => {
   // Debounce search input
   useEffect(() => {
     const debounceTimeout = setTimeout(() => {
-      setCurrentPage(1); // Reset to the first page when searching
+      setCurrentPage(1);
     }, 1000);
 
     return () => clearTimeout(debounceTimeout);
@@ -68,12 +75,12 @@ const Page: React.FC = () => {
 
   const handleSearchKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
     if (e.key === "Enter") {
-      setCurrentPage(1); // Reset to the first page when searching
+      setCurrentPage(1);
     }
   };
 
   return (
-    <div className="w-full pb-16  min-h-screen">
+    <div className="w-full pb-16 min-h-screen">
       <div className="w-full border-b px-32 py-6 flex justify-between gap-6">
         <div className="flex items-center gap-6">
           <Button
@@ -105,7 +112,6 @@ const Page: React.FC = () => {
           cards.map((card, index) => <HistoryCard key={index} card={card} />)
         )}
 
-        {/* Pagination Controls */}
         <div className="mt-6 flex justify-center items-center gap-4">
           <Button
             variant="outline"
@@ -130,12 +136,11 @@ const Page: React.FC = () => {
   );
 };
 
-// InfoCard Component
 const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
   const [expanded, setExpanded] = useState(false);
-  const maxLines = 5; // Show only 5 lines before "See More"
+  const [dialogOpen, setDialogOpen] = useState(false);
+  const maxLines = 5;
 
-  // Function to parse JSON safely
   const parsePrototype = (prototype: string) => {
     try {
       return JSON.parse(prototype);
@@ -145,7 +150,7 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
     }
   };
 
-  const prototypeData = parsePrototype(card.prototype); // Parse safely
+  const prototypeData = parsePrototype(card.prototype);
 
   const formatResponse = (response: string) => {
     return response.split("\n").map((line, index) => (
@@ -175,13 +180,12 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
   };
 
   const formattedContent = formatResponse(card.description);
-  const shouldShowSeeMore = formattedContent.length > maxLines;
+  const shouldShowSeeMore = formattedContent.length > maxLines || prototypeData?.length > 0;
 
-
-  function getDomainName(link) {
+  function getDomainName(link: string) {
     try {
       const url = new URL(link);
-      return url.hostname; // Returns the domain name
+      return url.hostname;
     } catch (error) {
       console.error("Invalid URL:", error);
       return null;
@@ -189,46 +193,82 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
   }
 
   return (
-    <div className="p-4 px-8 w-full border rounded-xl font-body shadow-md bg-background relative mb-4">
-      <div className="flex justify-between items-start">
-        <h3 className="text-md font-semibold text-blue-600 break-words">
-          {card.title}
-        </h3>
-      </div>
-      <div className="my-4">
-        {expanded ? formattedContent : formattedContent.slice(0, maxLines)}
+    <>
+      <div className="p-4 px-8 w-full border rounded-xl font-body shadow-md bg-background relative mb-4">
+        <div className="flex justify-between items-start">
+          <h3 className="text-md font-semibold text-blue-600 break-words">
+            {card.title}
+          </h3>
+        </div>
+        <div className="my-4">
+          {expanded ? formattedContent : formattedContent.slice(0, maxLines)}
+          
+          {expanded && prototypeData?.length > 0 && (
+            <div className="mt-4">
+              <h4 className="font-semibold mb-2">Prototypes:</h4>
+              {prototypeData.map((item: { link: string }, index: number) => (
+                <div key={index} className="mb-1">
+                  <a 
+                    href={item.link} 
+                    target="_blank" 
+                    className="text-blue-600 underline flex items-center gap-1"
+                  >
+                    {getDomainName(item.link) || item.link}
+                    <ArrowTopRightIcon className="w-3 h-3" />
+                  </a>
+                </div>
+              ))}
+            </div>
+          )}
 
-        {/* Display prototype links if they exist */}
-        {expanded && (prototypeData?.length > 0 && (
-          <div className="">
-            <h1 className="text-lg font-bold mt-4">Prototypes:</h1>
-            {prototypeData.map((item: { link: string }, index: number) => (
-              <div key={index}>
-                <a href={item.link} target="_blank" className="text-blue-600 mt-2 underline">{item.link}</a>
+          {shouldShowSeeMore && (
+            <button
+              onClick={() => setDialogOpen(true)}
+              className="text-blue-600 mt-2 inline cursor-pointer"
+            >
+              See More
+            </button>
+          )}
+        </div>
+      </div>
+
+      <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
+        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto font-body">
+          <DialogHeader>
+            <DialogTitle className="text-2xl">{card.title}</DialogTitle>
+          </DialogHeader>
+          <div className="space-y-4">
+            <div className="whitespace-pre-line">
+              {formatResponse(card.description)}
+            </div>
+            
+            {prototypeData?.length > 0 && (
+              <div>
+                <h4 className="font-semibold text-lg mb-2">Prototypes:</h4>
+                <div className="space-y-2">
+                  {prototypeData.map((item: { link: string }, index: number) => (
+                    <div key={index} className="flex items-center">
+                      <a 
+                        href={item.link} 
+                        target="_blank" 
+                        className="text-blue-600 underline flex items-center gap-1"
+                      >
+                        { item.link}
+                        <ArrowTopRightIcon className="w-3 h-3" />
+                      </a>
+                    </div>
+                  ))}
+                </div>
               </div>
-            ))}
+            )}
           </div>
-        ))}
-        
-
-        {shouldShowSeeMore && !expanded  && (
-          <button
-            onClick={() => setExpanded(true)}
-            className="text-blue-600 mt-2 inline cursor-pointer"
-          >
-            See More
-          </button>
-        )}
-        {!shouldShowSeeMore && !expanded && prototypeData?.length > 0  && (
-          <button
-            onClick={() => setExpanded(true)}
-            className="text-blue-600 mt-2 inline cursor-pointer"
-          >
-            See More
-          </button>
-        )}
-      </div>
-    </div>
+          <div className="w-full">
+          <h4 className="font-semibold text-lg mb-2">Architecture:</h4>
+            <img src={card.architecture} className="w-full" alt="" />
+          </div>
+        </DialogContent>
+      </Dialog>
+    </>
   );
 };
 

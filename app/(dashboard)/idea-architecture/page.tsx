@@ -117,7 +117,7 @@ const Page: React.FC = () => {
           <Skeleton className=" h-[800px] bg-gray-100" />
         ) : diagramData ? (
           <div className="mt-8 px-6 mx-32">
-            <div className="flex flex-col items-center padding overflow-scroll relative  h-[800px] gap-4">
+            <div className="flex flex-col items-center padding overflow-auto relative  h-[800px] gap-4">
               {/* Display the diagram image */}
               <img
                 src={diagramData.imageUrl}

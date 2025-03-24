@@ -4,6 +4,8 @@ import { getServerSession } from "next-auth/next";
 import { authOption } from "@/lib/auth";
 import axios from "axios";
 
+export const maxDuration = 20;
+
 export async function POST(req: NextRequest) {
   try {
     const { text } = await req.json();

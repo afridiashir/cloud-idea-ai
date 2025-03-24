@@ -52,6 +52,9 @@ export async function GET(req: NextRequest, res: NextResponse) {
         const totalRecords = await prisma.ideaHistory.count({
             where: {
                 user_id: +session.user.id,
+                architecture:{
+                    not : ""
+                },
                 OR: [
                     {
                         title: {

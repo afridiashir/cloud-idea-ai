@@ -233,7 +233,7 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
       </div>
 
       <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
-        <DialogContent className="max-w-4xl max-h-[80vh] overflow-y-auto font-body">
+        <DialogContent className="max-w-[80vw] max-h-[80vh] overflow-y-auto font-body">
           <DialogHeader>
             <DialogTitle className="text-2xl">{card.title}</DialogTitle>
           </DialogHeader>

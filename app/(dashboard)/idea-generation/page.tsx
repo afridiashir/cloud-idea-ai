@@ -123,7 +123,7 @@ const Page: React.FC = () => {
     <div className="w-full pb-16  min-h-screen">
       <IdeaBar menu="generation" />
       <div className="flex flex-col lg:flex-row items-center justify-center px-4 gap-48 pt-16 md:pt-32">
-        <div className="w-full lg:max-w-5xl    flex flex-col items-center">
+        <div className="    flex flex-col items-center">
           <h1 className="font-heading text-5xl font-semibold">
             Generate Ideas
           </h1>

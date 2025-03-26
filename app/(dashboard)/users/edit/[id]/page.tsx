@@ -2,7 +2,7 @@
 import FormButton from "@/components/FormButton";
 import { Input } from "@/components/ui/input";
 import axios from "axios";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react"; // Added useEffect
 import toast from "react-hot-toast";
 import { useRouter } from "next/navigation";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -14,11 +14,22 @@ const Page = ({ params }: { params: { id: string } }) => {
   const { data, loader } = useFetchUser(params.id);
   const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
-    name: data?.name || "",
-    email: data?.email || "",
+    name: "",
+    email: "",
     password: "",
   });
   const router = useRouter();
+
+  // Add this useEffect to initialize formData when data is loaded
+  useEffect(() => {
+    if (data) {
+      setFormData({
+        name: data.name || "",
+        email: data.email || "",
+        password: "",
+      });
+    }
+  }, [data]);
 
   const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -77,7 +88,7 @@ const Page = ({ params }: { params: { id: string } }) => {
       </div>
 
       {/* Form Section */}
-      <div className="flex flex-col lg:flex-row items-center justify-center px-4 gap-48 pt-16 md:pt-16">
+      <div className="flex flex-col lg:flex-row items-center justify-around px-4 gap-48 pt-16 md:pt-16 lg:mx-32">
         <div className="w-full lg:max-w-5xl flex flex-col items-center">
           <h1 className="font-heading text-5xl font-semibold">Edit User</h1>
           <p className="px-4 text-center mt-4 font-body text-foreground">
@@ -91,12 +102,11 @@ const Page = ({ params }: { params: { id: string } }) => {
           >
             {/* Name Field */}
             <div className="w-full mb-4">
-              
               <input
                 type="text"
                 name="name"
                 placeholder="Enter Full Name"
-                value={data.name}
+                value={formData.name} // Changed from data.name to formData.name
                 onChange={handleInputChange}
                 className="w-full bg-background p-5 rounded-xl border-blue-400 border font-body outline-none focus:ring-1 ring-blue-600"
               />
@@ -104,12 +114,11 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             {/* Email Field */}
             <div className="w-full mb-4">
-              
               <input
                 type="email"
                 name="email"
                 placeholder="Enter Email Address"
-                value={data.email}
+                value={formData.email} // Changed from data.email to formData.email
                 onChange={handleInputChange}
                 className="w-full bg-background p-5 rounded-xl border-blue-400 border font-body outline-none focus:ring-1 ring-blue-600"
               />
@@ -117,7 +126,6 @@ const Page = ({ params }: { params: { id: string } }) => {
 
             {/* Password Field */}
             <div className="w-full mb-4">
-              
               <input
                 type="password"
                 name="password"

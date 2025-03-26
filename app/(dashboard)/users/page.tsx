@@ -29,10 +29,10 @@ const router = useRouter();
       </div>
       <p className="mb-10"></p>
       {userLoader && (
-        <Skeleton className="w-full h-[400px]" />
+        <Skeleton className="w-full h-[400px] mx-32" />
       )}
       {!userLoader && (
-        <Card className="p-4 pt-0 font-body m-4">
+        <Card className="p-4 pt-0 font-body m-4 mx-32">
           <DataTable columns={columns} data={users} />
         </Card>
       )}

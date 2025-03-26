@@ -268,7 +268,7 @@ const CustomLightbox: React.FC = () => {
         </div>
 
         <div 
-          className="overflow-scroll max-w-full max-h-full"
+          className="overflow-x-auto w-full max-h-[90vh]"
           onMouseDown={handleMouseDown}
           onMouseMove={handleMouseMove}
           onMouseUp={handleMouseUp}
@@ -279,7 +279,7 @@ const CustomLightbox: React.FC = () => {
             ref={imageRef}
             src={imageUrl}
             alt="Enlarged view"
-            className="max-w-full max-h-full object-contain"
+            className="origin-center transition-transform duration-200 w-full"
             style={{
               transform: `scale(${scale}) translate(${position.x}px, ${position.y}px)`,
               cursor: scale > 1 ? (isDragging ? 'grabbing' : 'grab') : 'default',

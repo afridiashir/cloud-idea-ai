@@ -81,7 +81,7 @@ const Page: React.FC = () => {
       </div>
 
       {/* Form Section */}
-      <div className="flex flex-col lg:flex-row items-center justify-center px-4 gap-48 pt-16 md:pt-16">
+      <div className="flex flex-col lg:flex-row items-center justify-center px-4 gap-48 pt-16 md:pt-16 lg:mx-32">
         <div className="w-full lg:max-w-5xl flex flex-col items-center">
           <h1 className="font-heading text-5xl font-semibold">Create New User</h1>
           <p className="px-4 text-center mt-4 font-body text-foreground">

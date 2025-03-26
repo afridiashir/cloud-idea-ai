@@ -29,7 +29,7 @@ const router = useRouter();
       </div>
       <p className="mb-10"></p>
       {userLoader && (
-        <Skeleton className="w-full h-[400px] mx-32" />
+        <Skeleton className="w-full h-[400px]" />
       )}
       {!userLoader && (
         <Card className="p-4 pt-0 font-body m-4 mx-32">

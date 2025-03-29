@@ -61,17 +61,65 @@ async function sendInviteEmail(email: string, password: string) {
     to: email,
     subject: "Welcome! Your Account Details",
     text: `Hello,\n\nYour account has been created successfully!\n\nLogin Details:\nEmail: ${email}\nPassword: ${password}\n\nPlease change your password after logging in for security reasons.\n\nBest Regards,\nYour App Team`,
-    html: `
-      <p>Hello,</p>
-      <p>Your account has been created successfully!</p>
-      <p><strong>Login Details:</strong></p>
-      <ul>
-        <li><strong>Email:</strong> ${email}</li>
-        <li><strong>Password:</strong> ${password}</li>
-      </ul>
-      <p>Please change your password after logging in for security reasons.</p>
-      <p>Best Regards,<br>Your App Team</p>
-    `,
+    html: `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudIdea Account Created</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #368dff;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        .content {
+            font-size: 16px;
+            color: #333;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+            text-align: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">CloudIdea</div>
+        <div class="content">
+            <p>Hello,</p>
+            <p>Your account has been created successfully!</p>
+            <p><strong>Login Details:</strong></p>
+            <ul>
+                <li><strong>Email:</strong> ${email}</li>
+                <li><strong>Password:</strong> ${password}</li>
+            </ul>
+            <p>Please change your password after logging in for security reasons.</p>
+            <p>Best Regards,<br>CloudIdea Team</p>
+        </div>
+        <div class="footer">&copy; 2025 CloudIdea. All rights reserved.</div>
+    </div>
+</body>
+</html>
+`,
   };
 
   await transporter.sendMail(mailOptions);

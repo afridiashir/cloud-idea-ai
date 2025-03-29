@@ -37,11 +37,65 @@ async function sendOtpEmail(email: string, otp: string) {
   });
 
   await transporter.sendMail({
-    from: '"Your App" <your-email@gmail.com>',
+    from: `"Cloud Idea" ${process.env.MAIL_USER}`,
     to: email,
-    subject: "Your Login OTP",
-    text: `Your OTP is ${otp}. It expires in 5 minutes.`,
-    html: `<p>Your OTP is <strong>${otp}</strong>. It expires in 5 minutes.</p>`,
+    subject: "Cloud Idea - Your Login OTP",
+    html: `<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>CloudIdea OTP Verification</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            margin: 0;
+            padding: 0;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            background-color: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+        .logo {
+            font-size: 24px;
+            font-weight: bold;
+            color: #368dff;
+            margin-bottom: 20px;
+        }
+        .otp-box {
+            background-color: #368dff;
+            color: #ffffff;
+            font-size: 24px;
+            font-weight: bold;
+            padding: 10px;
+            border-radius: 4px;
+            display: inline-block;
+            margin: 10px 0;
+        }
+        .footer {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #777;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="logo">CloudIdea</div>
+        <p>Your OTP is:</p>
+        <div class="otp-box">${otp}</div>
+        <p>This OTP expires in 5 minutes.</p>
+        <p>If you did not request this code, please ignore this email.</p>
+        <div class="footer">&copy; 2025 CloudIdea. All rights reserved.</div>
+    </div>
+</body>
+</html>`,
   });
 }
 

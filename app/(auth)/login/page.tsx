@@ -11,7 +11,7 @@ import { z } from "zod"; // For schema validation
 import { zodResolver } from "@hookform/resolvers/zod";
 
 import Graphic from "@/public/images/login_graphic.png";
-import ThemeToggle from "@/components/ThemeToggle";
+import ThemeToggle from "@/components/ThemeToggleMoon";
 
 interface FormData {
   email: string;
@@ -159,9 +159,10 @@ export default function Login() {
           </p>
         </div>
       </div>
-      <div className="w-4/6 flex-col items-center justify-center hidden lg:flex">
       <div className="fixed right-10 top-10 font-body">
       <ThemeToggle /></div>
+      <div className="w-4/6 flex-col items-center justify-center hidden lg:flex">
+      
         <div className="font-heading text-6xl font-bold flex flex-col-reverse lg:flex-row gap-8 items-center justify-center mb-5">
           <h1 className="text-center">
             Bring <span className="text-primary">Ideas</span> to{" "}

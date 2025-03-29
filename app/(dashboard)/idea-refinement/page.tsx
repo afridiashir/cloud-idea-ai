@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import axios from "axios";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { ArrowLeft, Bookmark, CircleDashed, Snowflake } from "lucide-react";
+import { ArrowLeft, Bookmark, CircleDashed, Pencil, Snowflake } from "lucide-react";
 import { ArrowTopRightIcon } from "@radix-ui/react-icons";
 import { Button } from "@/components/ui/button";
 import FormButton from "@/components/FormButton";
@@ -15,6 +15,8 @@ import toast from "react-hot-toast";
 import { Description } from "@radix-ui/react-dialog";
 import Tour from "@/components/Tours";
 import { ideaRefinementPageSteps } from "@/components/tour";
+import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import { Textarea } from "@/components/ui/textarea";
 
 // Interface for card data
 interface Card {
@@ -91,8 +93,22 @@ const Page: React.FC = () => {
   const cards: Card[] = selectedIdeas || []; // Ensure cards is always an array.
   const router = useRouter();
 
+
+  const [editIdea, setEditIdea] = useState("");
+  const [isEditOpen, setIsEditOpen] = useState(false);
+
   const handleCardSelect = (card: Card) => {
     setSelectedCard(card);
+    setEditIdea(card.idea);
+  };
+
+  const handleSaveEdit = () => {
+    if (selectedCard) {
+      setSelectedCard((prev) =>
+        prev ? { ...prev, title: prev.title, idea: editIdea } : null
+      );
+      setIsEditOpen(false);
+    }
   };
 
   const handleNext = () => {
@@ -142,6 +158,8 @@ const Page: React.FC = () => {
             ? { ...prev, idea: response.data.refined_idea } // Ensure it's a string
             : null
         );
+        
+    setEditIdea(selectedCard.idea);
 
         toast.success("Idea refined successfully!");
       } catch (error) {
@@ -259,7 +277,8 @@ const Page: React.FC = () => {
           </div>
           <div className="w-full lg:w-1/2 flex flex-col items-end p-6">
           <div className="flex justify-end gap-4">
-            <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white ${saveBtnLoader ? 'animate-pulse' : ''}`} disabled={saveBtnLoader} onClick={handleSaveIdea}><Bookmark size={94}/></Button>
+          <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white `}  onClick={() => setIsEditOpen(true)}><Pencil size={94}/></Button>
+          <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white ${saveBtnLoader ? 'animate-pulse' : ''}`} disabled={saveBtnLoader} onClick={handleSaveIdea}><Bookmark size={94}/></Button>
             <Button variant="outline" className="h-14" onClick={handleIdeaArchitecture}>
               <span className="text-xl">
                 <Snowflake size={36} />
@@ -302,6 +321,18 @@ const Page: React.FC = () => {
         </div>
       </div>
       
+      {/* Edit Modal */}
+      <Dialog open={isEditOpen} onOpenChange={setIsEditOpen}>
+        <DialogContent className="font-body max-w-3xl p-4">
+          <DialogHeader>
+            <DialogTitle>{selectedCard?.title ? selectedCard.title : 'Edit Idea'}</DialogTitle>
+          </DialogHeader>
+          <Textarea value={editIdea} onChange={(e) => setEditIdea(e.target.value)} placeholder="Idea description" className="h-[300px] text-2xl outline-none" />
+          <DialogFooter>
+            <Button onClick={handleSaveEdit}>Save</Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
       <Tour pageSteps={ideaRefinementPageSteps} />
     </div>
   );

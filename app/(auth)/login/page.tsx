@@ -1,6 +1,6 @@
 "use client";
 import Image from "next/image";
-import { Mail, Lock, Eye, EyeOff, CircleDashed } from "lucide-react";
+import { Mail, Lock, Eye, EyeOff, CircleDashed, Key } from "lucide-react";
 import { Input } from "@/components/ui/input"; // Shadcn Input Component
 import { useState } from "react";
 import { useForm, SubmitHandler } from "react-hook-form";
@@ -16,16 +16,20 @@ import ThemeToggle from "@/components/ThemeToggle";
 interface FormData {
   email: string;
   password: string;
+  otp?:string;
 }
 
 // Zod schema for validation
 const UserLoginSchema = z.object({
   email: z.string().email("Invalid email address"),
   password: z.string().min(8, "Password must be at least 8 characters"),
+  otp: z.string().length(6, "OTP must be 6 digits").optional(),
 });
 
 export default function Login() {
   const [showPassword, setShowPassword] = useState(false); // State to toggle password visibility
+  const [otpSent, setOtpSent] = useState(false);
+  
   const {
     register,
     handleSubmit,
@@ -43,19 +47,25 @@ export default function Login() {
   }
 
   const submitHandler: SubmitHandler<FormData> = async (data) => {
-    const response = await signIn("credentials", {
+    const data2 = {
       email: data.email,
       password: data.password,
-      redirect: false, 
-    });
+      redirect: false,
+  ...(data.otp && { otp: data.otp }),
+    };
+
+    const response = await signIn("credentials", data2);
 
     if (response?.error) {
-      toast.error("Invalid Username or Password");
+      if (response.error.includes("OTP sent")) {
+        toast.success("OTP sent to your email");
+        setOtpSent(true);
+      } else {
+        toast.error(response.error);
+      }
     } else if (response?.ok) {
       toast.success("Login Successful");
       router.push("/dashboard");
-    } else {
-      toast.error("Something went wrong. Please try again.");
     }
   };
 
@@ -112,6 +122,25 @@ export default function Login() {
               )}
             </div>
 
+
+            {/* OTP Field */}
+            {otpSent && (
+              <div className="relative">
+                <Key className="absolute left-4 top-4 text-gray-400" size={25} />
+                <Input
+                  type="text"
+                  placeholder="Enter OTP"
+                  className="pl-16 pr-4 py-2 rounded-[16px] h-[56px] lg:text-lg"
+                  {...register("otp")}
+                />
+                {errors.otp && (
+                  <span className="text-destructive text-sm">
+                    {errors.otp.message}
+                  </span>
+                )}
+              </div>
+            )}
+
             {/* Submit Button */}
             <button
               type="submit"
@@ -120,7 +149,7 @@ export default function Login() {
             >
               {isSubmitting && (
                 <CircleDashed className="w-[20px] animate-spin" />
-              )} Login
+              )} {otpSent ? "Verify OTP & Login" : "Login"}
             </button>
           </form>
         </div>

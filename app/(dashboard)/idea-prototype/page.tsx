@@ -88,7 +88,7 @@ const Page: React.FC = () => {
         <div className="w-full flex justify-between px-6 gap-[480px]">
           <Button
             variant="outline"
-            className="font-body py-6 flex gap-4 bg-background text-xl"
+            className="font-body  text-body py-6 flex gap-4 bg-background text-xl"
             onClick={() => router.back()}
             aria-label="Go Back"
           >

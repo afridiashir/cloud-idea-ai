@@ -87,6 +87,7 @@ const Page: React.FC = () => {
   const [selectedCard, setSelectedCard] = useState<Card | null>(null);
   const [refineBtnLoader, setRefineBtnLoader] = useState(false);
   const [prototypeBtnLoader, setPrototypeBtnLoader] = useState(false);
+  const [diagramBtnLoader, setDiagramBtnLoader] = useState(false);
   const [chatBtnLoader, setChatBtnLoader] = useState(false);
   const [saveBtnLoader, setSaveBtnLoader] = useState(false);
   const { selectedIdeas, setPrototypeText,name, setPrototypeTitle } = useIdea();
@@ -192,17 +193,17 @@ const Page: React.FC = () => {
 
   
   const handleIdeaArchitecture = () => {
-    setPrototypeBtnLoader(true);
+    // setPrototypeBtnLoader(true);
     if(selectedCard.idea !== null){
 
       setPrototypeText(selectedCard.idea);
       setPrototypeTitle(selectedCard.title);
       router.push("/idea-architecture");
       
-    setPrototypeBtnLoader(false);
+    // setPrototypeBtnLoader(false);
     }else{
       
-    setPrototypeBtnLoader(false);
+    // setPrototypeBtnLoader(false);
       toast.error("Please select an Idea");
     }
   };
@@ -279,7 +280,7 @@ const Page: React.FC = () => {
           <div className="flex justify-end gap-4">
           <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white `}  onClick={() => setIsEditOpen(true)}><Pencil size={94}/></Button>
           <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white ${saveBtnLoader ? 'animate-pulse' : ''}`} disabled={saveBtnLoader} onClick={handleSaveIdea}><Bookmark size={94}/></Button>
-            <Button variant="outline" className="h-14" onClick={handleIdeaArchitecture}>
+            <Button variant="outline" className={`h-14 ${diagramBtnLoader ? 'animate-pulse' : ''}`} onClick={handleIdeaArchitecture}>
               <span className="text-xl">
                 <Snowflake size={36} />
               </span>

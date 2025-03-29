@@ -64,11 +64,11 @@ const Page: React.FC = () => {
   return (
     <div className="w-full pb-16 min-h-screen">
       {/* Header Section */}
-      <div className="w-full border-b px-10 py-6 flex justify-between gap-6">
+      <div className="w-full border-b px-4 lg:px-32 py-6 flex flex-col lg:flex-row justify-between gap-6">
         <div className="flex items-center gap-6">
           <Button
             variant="outline"
-            className="font-body py-6 flex gap-4 bg-background text-xl"
+            className="font-body  text-body py-6 flex gap-4 bg-background text-xl"
             onClick={() => router.back()}
           >
             <ArrowLeft /> Back
@@ -88,7 +88,7 @@ const Page: React.FC = () => {
       </div>
 
       {/* Grid Layout for Cards */}
-      <div className="px-10 py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
+      <div className="px-4 lg:px-32 py-6 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-6">
         {loading
           ? Array.from({ length: 8 }).map((_, index) => (
               <Skeleton key={index} className="w-full h-[400px]" />

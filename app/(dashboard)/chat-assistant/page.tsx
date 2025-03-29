@@ -290,7 +290,7 @@ const ChatComponent = ({ isUsername }: { isUsername: any }) => {
       <div className="w-full border-b px-2 lg:px-32 py-6 flex items-center gap-6">
         <Button
           variant="outline"
-          className="font-body py-6 flex gap-4 bg-background text-xl"
+          className="font-body  text-body py-6 flex gap-4 bg-background text-xl"
           onClick={() => router.back()}
         >
           <ArrowLeft /> Back

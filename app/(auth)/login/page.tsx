@@ -116,7 +116,7 @@ export default function Login() {
                 )}
               </button>
               {errors.password && (
-                <span className="text-destructive text-sm">
+                <span className="text-destructive text-sm mt-2">
                   {errors.password.message}
                 </span>
               )}
@@ -134,7 +134,7 @@ export default function Login() {
                   {...register("otp")}
                 />
                 {errors.otp && (
-                  <span className="text-destructive text-sm">
+                  <span className="text-destructive text-sm mt-2">
                     {errors.otp.message}
                   </span>
                 )}

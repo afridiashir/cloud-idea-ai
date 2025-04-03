@@ -21,13 +21,13 @@ import FormButton from "@/components/FormButton";
 import { useIdea } from "@/components/IdeaProvider";
 import Image from "next/image";
 
-
 // Interface for card data
 interface Card {
   description: string;
   title: string;
   prototype: string;
   architecture: string;
+  name:string;
 }
 
 // InfoCard Component Props
@@ -167,7 +167,7 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
     setSaveBtnLoader(true);
     const response = axios
       .post("/api/idea/save", {
-        name: card.title,
+        name: card.name,
         title: card.title,
         description: idea,
       })
@@ -187,9 +187,9 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
   const handleIdeaPrototype = () => {
     setPrototypeBtnLoader(true);
     if (card.description !== null) {
-      setPrototypeText(card.description);
+      setPrototypeText(idea);
       setPrototypeTitle(card.title);
-      setName(card.title);
+      setName(card.name);
       router.push("/idea-prototype");
 
       setPrototypeBtnLoader(false);
@@ -199,43 +199,39 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
     }
   };
 
-  
-    const handleIdeaArchitecture = () => {
-      setDiagramBtnLoader(true);
-      if (card.description !== null) {
-        setPrototypeText(card.description);
-        setPrototypeTitle(card.title);
-        setName(card.title);
-        router.push("/idea-architecture");
-        
-        setDiagramBtnLoader(false);
-      }else{
-        
-        setDiagramBtnLoader(false);
-        toast.error("Please select an Idea");
-      }
-    };
-  
-    const handleChat = () => {
-      setChatBtnLoader(true);
-      const response = axios
-        .post("/api/chat-assistant", {
-          text: card.description,
-        })
-        .then((res) => {
-          console.log(res);
-          toast.success("Chat Idea Initialized");
-          setChatBtnLoader(false);
-          router.push("/chat-assistant");
-        })
-        .catch((e) => {
-          console.log(e);
-          setChatBtnLoader(false);
-          toast.error("Something Went Wrong!");
-        });
-        
-    };
-  
+  const handleIdeaArchitecture = () => {
+    setDiagramBtnLoader(true);
+    if (card.description !== null) {
+      setPrototypeText(idea);
+      setPrototypeTitle(card.title);
+      setName(card.name);
+      router.push("/idea-architecture");
+
+      setDiagramBtnLoader(false);
+    } else {
+      setDiagramBtnLoader(false);
+      toast.error("Please select an Idea");
+    }
+  };
+
+  const handleChat = () => {
+    setChatBtnLoader(true);
+    const response = axios
+      .post("/api/chat-assistant", {
+        text: idea,
+      })
+      .then((res) => {
+        console.log(res);
+        toast.success("Chat Idea Initialized");
+        setChatBtnLoader(false);
+        router.push("/chat-assistant");
+      })
+      .catch((e) => {
+        console.log(e);
+        setChatBtnLoader(false);
+        toast.error("Something Went Wrong!");
+      });
+  };
 
   const parsePrototype = (prototype: string) => {
     try {
@@ -375,27 +371,7 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
           ) : (
             ""
           )}
-          <DialogFooter className="gap-4">
-            <FormButton
-                state={diagramBtnLoader}
-                text="Reload Diagram"
-                onClick={handleIdeaArchitecture}
-                className="w-auto text-md h-12 bg-blue-600 text-white hover:bg-blue-400"
-              />
-            <FormButton
-              state={prototypeBtnLoader}
-              text="Reload Prototype"
-              onClick={handleIdeaPrototype}
-              className="w-auto text-md h-12 bg-blue-600 text-white hover:bg-blue-400"
-            />
-            <Button
-                className={`w-auto bg-primary font-body hover:bg-blue-500 text-primary border-primary border h-12 text-xl rounded-xl  ${chatBtnLoader && 'animate-pulse'}`}
-                disabled={chatBtnLoader} // Disable the button when `state` is true
-                onClick={handleChat} // Attach the onClick handler
-              >
-                <Image src="/chat.png" width={40} height={40} alt="Chat" />
-              </Button>
-          </DialogFooter>
+          <DialogFooter className="gap-4"></DialogFooter>
         </DialogContent>
       </Dialog>
 
@@ -414,7 +390,30 @@ const HistoryCard: React.FC<InfoCardProps> = ({ card }) => {
               }}
             ></textarea>
           </div>
-          <DialogFooter>
+          <DialogFooter className="flex sm:justify-between w-full items-center">
+            <div className="flex gap-2">
+              <FormButton
+                state={diagramBtnLoader}
+                text="Reload Diagram"
+                onClick={handleIdeaArchitecture}
+                className="w-auto text-md h-12 bg-blue-600 text-white hover:bg-blue-400"
+              />
+              <FormButton
+                state={prototypeBtnLoader}
+                text="Reload Prototype"
+                onClick={handleIdeaPrototype}
+                className="w-auto text-md h-12 bg-blue-600 text-white hover:bg-blue-400"
+              />
+              <Button
+                className={`w-auto bg-primary font-body hover:bg-blue-500 text-primary border-primary border h-12 text-xl rounded-xl  ${
+                  chatBtnLoader && "animate-pulse"
+                }`}
+                disabled={chatBtnLoader} // Disable the button when `state` is true
+                onClick={handleChat} // Attach the onClick handler
+              >
+                <Image src="/chat.png" width={40} height={40} alt="Chat" />
+              </Button>
+            </div>
             <FormButton
               state={saveBtnLoader}
               text="Update Idea"

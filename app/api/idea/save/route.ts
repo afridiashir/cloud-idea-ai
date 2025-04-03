@@ -51,6 +51,10 @@ export async function POST(req: NextRequest) {
         updatedData.prototype = prototype;
       }
 
+      if(description){
+        updatedData.description = description;
+      }
+
       // Update only if there are changes
       if (Object.keys(updatedData).length > 0) {
         const updatedIdea = await prisma.ideaHistory.update({

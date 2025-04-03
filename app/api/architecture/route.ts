@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
       "https://app.eraser.io/api/render/prompt", // Replace with your API endpoint
       { "text" : text,
         "theme" : "light",
-        "diagramType": "flowchart-diagram",
+        "diagramType": "sequence-diagram",
 "mode": "standard",
 "returnFile": false,
 "background": true,

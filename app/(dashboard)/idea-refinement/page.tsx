@@ -277,9 +277,9 @@ const Page: React.FC = () => {
             ))}
           </div>
           <div className="w-full lg:w-1/2 flex flex-col items-end p-6">
-          <div className="flex justify-end gap-4">
-          <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white `}  onClick={() => setIsEditOpen(true)}><Pencil size={94}/></Button>
-          <Button  className={`h-14 text-white w-14 text-md hover:bg-blue-600 hover:text-white ${saveBtnLoader ? 'animate-pulse' : ''}`} disabled={saveBtnLoader} onClick={handleSaveIdea}><Bookmark size={94}/></Button>
+          <div className="flex justify-end gap-4 font-body">
+          <Button  className={`h-14 text-white text-md hover:bg-blue-600 hover:text-white `}  onClick={() => setIsEditOpen(true)}><Pencil size={94}/>Edit Idea</Button>
+          <Button  className={`h-14 text-white text-md hover:bg-blue-600 hover:text-white ${saveBtnLoader ? 'animate-pulse' : ''}`} disabled={saveBtnLoader} onClick={handleSaveIdea}><Bookmark size={94}/>Save Idea</Button>
             <Button variant="outline" className={`h-14 ${diagramBtnLoader ? 'animate-pulse' : ''}`} onClick={handleIdeaArchitecture}>
               <span className="text-xl">
                 <Snowflake size={36} />

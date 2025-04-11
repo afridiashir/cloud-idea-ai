@@ -3,7 +3,7 @@ import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "pg"; // Use ES6 import syntax
-import { mongodbConnection, mysqlConnection } from "../connect/route";
+import { mongodbConnection, mysqlConnection } from "../connect/connection";
 
 export async function GET(
   req: NextRequest,

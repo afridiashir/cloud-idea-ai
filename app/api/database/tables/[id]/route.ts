@@ -3,6 +3,7 @@ import prisma from "@/lib/db";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
 import { Client } from "pg"; // Use ES6 import syntax
+import { mongodbConnection, mysqlConnection, postgresConnection } from "../../connect/route";
 
 export async function GET(
   req: NextRequest,
@@ -59,6 +60,76 @@ export async function GET(
       }
     }
 
+    if (database.type.toLowerCase() === "mysql") {
+      const connection = await mysqlConnection(database.connectionString);
+    
+      try {
+        // Query to fetch table names from the MySQL database
+        const [rows] = await connection.query(`
+          SELECT table_name
+          FROM information_schema.tables
+          WHERE table_schema = DATABASE();
+        `);
+    
+        // Close the MySQL connection
+        await connection.end();
+    
+        // Return the table names
+        return NextResponse.json(
+          {
+            tables: rows, // MySQL returns rows directly
+          },
+          { status: 200 }
+        );
+      } catch (mysqlError) {
+        // Handle MySQL query errors
+        console.error("MySQL query error:", mysqlError);
+        await connection.end(); // Ensure the connection is closed
+        return NextResponse.json(
+          {
+            msg: "Error querying MySQL database",
+            error: mysqlError instanceof Error ? mysqlError.message : "Unknown error",
+          },
+          { status: 500 }
+        );
+      }
+    }
+
+    if (database.type.toLowerCase() === "mongodb") {
+      const client = await mongodbConnection(database.connectionString);
+      
+      try {
+        const db = client.db();
+        // Get all collections (equivalent to tables in MySQL)
+        const collections = await db.listCollections().toArray();
+        
+        const collectionNames = collections.map(col => ({ table_name: col.name }));;
+        console.log(collectionNames);
+        // Close the MongoDB connection
+        await client.close();
+    
+        // Return the collection names
+        return NextResponse.json(
+          {
+            tables: collectionNames, // Using same "tables" key for consistency
+          },
+          { status: 200 }
+        );
+      } catch (mongoError) {
+        // Handle MongoDB errors
+        console.error("MongoDB query error:", mongoError);
+        await client.close().catch(e => console.error("Failed to close connection:", e));
+        
+        return NextResponse.json(
+          {
+            msg: "Error querying MongoDB database",
+            error: mongoError instanceof Error ? mongoError.message : "Unknown error",
+          },
+          { status: 500 }
+        );
+      }
+    }
+
     // Return the database details for non-PostgreSQL databases
     return NextResponse.json(
       {
@@ -79,12 +150,3 @@ export async function GET(
   }
 }
 
-// Helper function to connect to PostgreSQL
-const postgresConnection = async (connectionString: string) => {
-  const client = new Client({
-    connectionString: connectionString,
-  });
-
-  await client.connect();
-  return client;
-};

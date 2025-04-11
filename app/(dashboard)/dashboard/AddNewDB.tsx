@@ -126,9 +126,9 @@ const AddNewDB: React.FC = () => {
                   <SelectValue placeholder="Select a database type (e.g., MySQL, PostgreSQL)" />
                 </SelectTrigger>
                 <SelectContent className="font-body">
-                  {/* <SelectItem value="mysql">MySQL</SelectItem> */}
+                  <SelectItem value="mysql">MySQL</SelectItem>
                   <SelectItem value="postgres">PostgreSQL</SelectItem>
-                  {/* <SelectItem value="mongodb">MongoDB</SelectItem> */}
+                  <SelectItem value="mongodb">MongoDB</SelectItem>
                   {/* <SelectItem value="sqlserver">SQL Server</SelectItem> */}
                 </SelectContent>
               </Select>
@@ -163,15 +163,24 @@ const AddNewDB: React.FC = () => {
               <div className="absolute top-5 right-3 flex items-center justify-center w-6 h-6 rounded-full border border-blue-600 text-blue-600 bg-white">
                 <TooltipProvider>
                   <Tooltip>
-                    <TooltipTrigger>
-                      <QuestionMarkIcon />
+                    <TooltipTrigger asChild>
+                    <button 
+        type="button" // This prevents form submission
+        onClick={(e) => {
+          e.preventDefault(); // Extra prevention
+          e.stopPropagation(); // Stops event bubbling
+        }}
+        className="focus:outline-none" // Removes focus ring
+       >
+                      <QuestionMarkIcon /></button>
                     </TooltipTrigger>
-                    <TooltipContent>
-                      <p className="w-[300px] break-words font-body">
+                    <TooltipContent className="flex flex-col items-center p-4 gap-4">
+                      <p className="w-[300px] break-words font-body text-center">
                         {formData.dbType
                           ? dbConfig[formData.dbType].tooltip
                           : "Provide the connection string for your database."}
                       </p>
+                      <a href="/Database_Connection_Guide.pdf" download={true} target="_blank" className="p-2 bg-blue-600 text-white font-body rounded hover:bg-blue-500">Download Connection Guide</a>
                     </TooltipContent>
                   </Tooltip>
                 </TooltipProvider>

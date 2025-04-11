@@ -29,12 +29,13 @@ declare module "next-auth" {
 // Function to send OTP via email
 async function sendOtpEmail(email: string, otp: string) {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
-    auth: {
-      user: process.env.MAIL_USER, // Your email
-      pass: process.env.MAIL_PASS, // App password
-    },
-  });
+      host: process.env.MAIL_HOST, // Your mail server host
+      port: +process.env.MAIL_PORT, // Common ports: 587 (TLS), 465 (SSL), 25 (non-secure)
+      auth: {
+        user: process.env.MAIL_USER, // Your full email address
+        pass: process.env.MAIL_PASS, // Your email password or app password
+      },
+    });
 
   await transporter.sendMail({
     from: `"Cloud Idea" ${process.env.MAIL_USER}`,
@@ -96,6 +97,8 @@ async function sendOtpEmail(email: string, otp: string) {
     </div>
 </body>
 </html>`,
+  }).then(e=>{
+    console.log(e.response);
   });
 }
 

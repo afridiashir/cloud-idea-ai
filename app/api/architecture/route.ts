@@ -33,7 +33,7 @@ export async function POST(req: NextRequest) {
         headers: { 
           "accept": "application/json",
           "content-type": "application/json",
-          "authorization": "Bearer ngSvOEpJZLZrT43hEbum"          
+          "authorization": `Bearer ${process.env.ERASER_API}`          
          },
       }
     );

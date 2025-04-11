@@ -49,15 +49,16 @@ export async function POST(req: NextRequest) {
 // Function to send an email invitation
 async function sendInviteEmail(email: string, password: string) {
   const transporter = nodemailer.createTransport({
-    service: "gmail",
+    host: process.env.MAIL_HOST, // Your mail server host
+    port: +process.env.MAIL_PORT, // Common ports: 587 (TLS), 465 (SSL), 25 (non-secure)
     auth: {
-      user: process.env.MAIL_USER, // Your email
-      pass: process.env.MAIL_PASS, // App password (generate from Google)
+      user: process.env.MAIL_USER, // Your full email address
+      pass: process.env.MAIL_PASS, // Your email password or app password
     },
   });
 
   const mailOptions = {
-    from: '"Your App" <your-email@gmail.com>',
+    from: `"Cloud Idea" ${process.env.MAIL_USER}`,
     to: email,
     subject: "Welcome! Your Account Details",
     text: `Hello,\n\nYour account has been created successfully!\n\nLogin Details:\nEmail: ${email}\nPassword: ${password}\n\nPlease change your password after logging in for security reasons.\n\nBest Regards,\nYour App Team`,

@@ -60,8 +60,13 @@ export default function Login() {
       if (response.error.includes("OTP sent")) {
         toast.success("OTP sent to your email");
         setOtpSent(true);
-      } else {
-        toast.error(response.error);
+      } 
+      console.log("")
+      if(response.error.includes("CredentialsSignin"))
+       {
+        toast.error("Incorrect email or password!");
+      }else{
+        toast.error("Something Went Wrong!")
       }
     } else if (response?.ok) {
       toast.success("Login Successful");

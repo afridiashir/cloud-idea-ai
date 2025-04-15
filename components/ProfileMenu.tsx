@@ -61,9 +61,9 @@ const ProfileMenu = ({ isExpanded }: { isExpanded: boolean }) => {
               <div className="w-full border-b border-gray-500 font-body flex justify-between b py-3 px-2 mt-4 items-center">
               <h3 className="text-lg text-foreground">Users</h3>
               <div className="flex items-center gap-2">
-              <a href={"/users"} className="text-blue-400 text-md">
+              <Link href={"/users"} className="text-blue-400 text-md">
                   Subaccounts
-                </a>{" "}
+                </Link>{" "}
               </div>
             </div>
             )}

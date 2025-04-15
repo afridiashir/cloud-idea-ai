@@ -80,6 +80,13 @@ export default function Login() {
         <div className="px-8 pt-8">
           <Image src="/logo.png" width={150} height={120} alt="Logo" />
         </div>
+        <div className="md:hidden font-heading text-3xl font-bold flex flex-col-reverse lg:flex-row gap-8 items-center justify-center mb-5">
+          <h1 className="text-center">
+            Bring <span className="text-primary">Ideas</span> to{" "}
+            <span className="text-primary">Life!</span>
+          </h1>
+          <Image src={Graphic} alt="graphic" className="w-16" />
+        </div>
         <div className="py-[50px] px-[20px] lg:py-[50px] lg:px-[70px]">
           <h2 className="text-center text-3xl font-bold mb-8">Login</h2>
 
@@ -134,7 +141,7 @@ export default function Login() {
                 <Key className="absolute left-4 top-4 text-gray-400" size={25} />
                 <Input
                   type="text"
-                  placeholder="Enter OTP"
+                  placeholder="Enter MFA"
                   className="pl-16 pr-4 py-2 rounded-[16px] h-[56px] lg:text-lg"
                   {...register("otp")}
                 />

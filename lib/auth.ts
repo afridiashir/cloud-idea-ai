@@ -38,15 +38,15 @@ async function sendOtpEmail(email: string, otp: string) {
     });
 
   await transporter.sendMail({
-    from: `"Cloud Idea" ${process.env.MAIL_USER}`,
+    from: `"Launch Idea" ${process.env.MAIL_USER}`,
     to: email,
-    subject: "Cloud Idea - Your Login OTP",
+    subject: "Launch Idea - Your Login OTP",
     html: `<!DOCTYPE html>
 <html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudIdea OTP Verification</title>
+    <title>LaunchIdea OTP Verification</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -88,12 +88,12 @@ async function sendOtpEmail(email: string, otp: string) {
 </head>
 <body>
     <div class="container">
-        <div class="logo">CloudIdea</div>
+        <div class="logo">LaunchIdea</div>
         <p>Your OTP is:</p>
         <div class="otp-box">${otp}</div>
         <p>This OTP expires in 5 minutes.</p>
         <p>If you did not request this code, please ignore this email.</p>
-        <div class="footer">&copy; 2025 CloudIdea. All rights reserved.</div>
+        <div class="footer">&copy; 2025 LaunchIdea. All rights reserved.</div>
     </div>
 </body>
 </html>`,

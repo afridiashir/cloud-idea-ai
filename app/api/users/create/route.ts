@@ -58,7 +58,7 @@ async function sendInviteEmail(email: string, password: string) {
   });
 
   const mailOptions = {
-    from: `"Cloud Idea" ${process.env.MAIL_USER}`,
+    from: `"Launch Idea" ${process.env.MAIL_USER}`,
     to: email,
     subject: "Welcome! Your Account Details",
     text: `Hello,\n\nYour account has been created successfully!\n\nLogin Details:\nEmail: ${email}\nPassword: ${password}\n\nPlease change your password after logging in for security reasons.\n\nBest Regards,\nYour App Team`,
@@ -67,7 +67,7 @@ async function sendInviteEmail(email: string, password: string) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>CloudIdea Account Created</title>
+    <title>LaunchIdea Account Created</title>
     <style>
         body {
             font-family: Arial, sans-serif;
@@ -104,7 +104,7 @@ async function sendInviteEmail(email: string, password: string) {
 </head>
 <body>
     <div class="container">
-        <div class="logo">CloudIdea</div>
+        <div class="logo">LaunchIdea</div>
         <div class="content">
             <p>Hello,</p>
             <p>Your account has been created successfully!</p>
@@ -114,9 +114,9 @@ async function sendInviteEmail(email: string, password: string) {
                 <li><strong>Password:</strong> ${password}</li>
             </ul>
             <p>Please change your password after logging in for security reasons.</p>
-            <p>Best Regards,<br>CloudIdea Team</p>
+            <p>Best Regards,<br>LaunchIdea Team</p>
         </div>
-        <div class="footer">&copy; 2025 CloudIdea. All rights reserved.</div>
+        <div class="footer">&copy; 2025 LaunchIdea. All rights reserved.</div>
     </div>
 </body>
 </html>

@@ -7,7 +7,7 @@ import Provider from "@/components/Provider";
 import Head from "next/head";
 
 export const metadata: Metadata = {
-  title: "Idea Generation App",
+  title: "Launch Idea",
   description: "",
 };
 

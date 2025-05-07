@@ -53,7 +53,7 @@ const DocumentUploader = () => {
     });
 
     try {
-      const response = await axios.post("https://scrape.vetaai.com/upload", formData, {
+      const response = await axios.post("https://scrape.webspikes.com/upload", formData, {
         headers: {
           "Content-Type": "multipart/form-data",
         },

@@ -171,7 +171,7 @@ const ChatComponent = ({ isUsername }: { isUsername: any }) => {
       setIsLoading(true); // Set loading state to true before making the request
 
       const response = await axios.post(
-        `https://scrape.vetaai.com/api/chat/${userDetail.knowledgeBaseId}`,
+        `https://scrape.webspikes.com/api/chat/${userDetail.knowledgeBaseId}`,
         {
           message: input,
           user_id: userDetail.userId,

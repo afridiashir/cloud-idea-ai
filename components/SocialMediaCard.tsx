@@ -22,7 +22,7 @@ const SocialMediaCard: React.FC<SocialMediaCardProps> = ({ logo, title }) => {
 
     try {
       const res = await axios.post(
-        "https://scrape.vetaai.com/scrape",
+        "https://scrape.webspikes.com/scrape",
         { urls: [link] },
         { headers: { "Content-Type": "application/json" } }
       );

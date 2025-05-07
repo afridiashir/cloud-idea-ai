@@ -42,7 +42,7 @@ export default function WebsiteLinks() {
   
     axios
       .post(
-        "https://scrape.vetaai.com/scrape",
+        "https://scrape.webspikes.com/scrape",
         {
           urls: [...links, newLink.trim()],
         },

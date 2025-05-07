@@ -149,7 +149,7 @@ const Page: React.FC = () => {
     if (selectedCard) {
       try {
         const response = await axios.post<RefineIdeaResponse>(
-          "https://idea.vetaai.com/api/v1/refine-idea",
+          "https://idea.webspikes.com/api/v1/refine-idea",
           { idea_text: selectedCard.idea },
           { headers: { "Content-Type": "application/json" } }
         );

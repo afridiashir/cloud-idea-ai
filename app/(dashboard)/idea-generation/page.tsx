@@ -89,7 +89,7 @@ const Page: React.FC = () => {
       };
 
       const response: ApiResponse = await axios.post(
-        "https://idea.vetaai.com/api/v1/generate-ideas",
+        "https://idea.webspikes.com/api/v1/generate-ideas",
         data,
         {
           headers: {

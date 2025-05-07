@@ -41,7 +41,7 @@ const Page: React.FC = () => {
       try {
         setLoading(true);
         const response = await axios.post(
-          "https://idea.vetaai.com/search",
+          "https://idea.webspikes.com/search",
           { idea: prototypeText },
           {
             headers: { "Content-Type": "application/json" },

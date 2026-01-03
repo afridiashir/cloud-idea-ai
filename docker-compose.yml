@@ -10,7 +10,7 @@ services:
         DATABASE_URL: ${DATABASE_URL}
         NEXT_PUBLIC_API_URL: ${NEXT_PUBLIC_API_URL}
     ports:
-      - "3000:3000"
+      - "5120:3000"
     environment:
       NODE_ENV: production
       DATABASE_URL: ${DATABASE_URL}
